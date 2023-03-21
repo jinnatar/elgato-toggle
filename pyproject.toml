@@ -10,6 +10,7 @@ packages = [{include = "elgato_toggle"}]
 python = "^3.11"
 elgato = "^4.0.1"
 asyncio = "^3.4.3"
+absl-py = "^1.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

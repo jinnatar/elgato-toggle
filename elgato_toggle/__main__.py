@@ -1,31 +1,40 @@
 import asyncio
 from typing import Optional
+from absl import app, logging, flags
 
 from elgato import Elgato, State, Info
+from elgato.exceptions import ElgatoConnectionError
+
+FLAGS=flags.FLAGS
+
+_LIGHTS = flags.DEFINE_multi_string('light', None, "Light to toggle. Repeat for multiple.")
 
 async def main():
     """Toggle lights."""
-    domain = 'dyn.nocturnal.fi'
-    state = await toggle(f'keylight-left.{domain}')
-    await set_state(f'keylight-right.{domain}', on=state)
+    lights: list = _LIGHTS.value
+    if lights:
+        await asyncio.gather(
+            *[ toggle(light ) for light in lights ]
+        )
+    else:
+        logging.error('No lights provided, use the repeated --light flag to provide hostnames.')
 
-async def set_state(hostname: str, on: bool):
-    """Set on state for a single light."""
-
-    async with Elgato(hostname) as elgato:
-        state: State = await elgato.state()
-        await elgato.light(on=on)
-
-async def toggle(hostname: str) -> bool:
+async def toggle(hostname: str) -> None:
     """Toggle a single light."""
 
     async with Elgato(hostname) as elgato:
-        state: State = await elgato.state()
-        await elgato.light(on=(not state.on))
-        return (not state.on)
+        try:
+            state: State = await elgato.state()
+            await elgato.light(on=(not state.on))
+        except ElgatoConnectionError as e:
+            logging.error(f'{e}: {hostname}')
+
+def run_async(argv):
+    del argv
+    asyncio.run(main())
 
 def run():
-    asyncio.run(main())
+    app.run(run_async)
 
 if __name__ == "__main__":
     run()
