@@ -11,7 +11,7 @@ _LIGHTS = flags.DEFINE_multi_string(
 )
 
 
-async def main():
+async def main() -> None:
     """Toggle lights."""
     lights: list = _LIGHTS.value
     if lights:
@@ -31,12 +31,12 @@ async def toggle(hostname: str) -> None:
             logging.error(f"{e}: {hostname}")
 
 
-def run_async(argv):
+def run_async(argv) -> None:
     del argv
     asyncio.run(main())
 
 
-def run():
+def run() -> None:
     app.run(run_async)
 
 

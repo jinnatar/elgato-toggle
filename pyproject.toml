@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "elgato-toggle"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Artanicus <artanicus@nocturnal.fi>"]
 readme = "README.md"
@@ -15,9 +15,9 @@ async-timeout = "^4.0.3"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.1.1"
 black = "^23.1.0"
 flake8 = "^6.0.0"
+pyright = "^1.1.339"
 
 [build-system]
 requires = ["poetry-core"]
