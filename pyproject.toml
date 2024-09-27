@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "elgato-toggle"
-version = "0.1.1"
+version = "0.1.2"
 description = "Toggle elgato keylights from the CLI"
 readme = "README.md"
 authors = [ {name = "Jinnatar", email = "jinnak@nocturnal.fi"}]
