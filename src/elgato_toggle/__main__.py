@@ -1,6 +1,7 @@
 import asyncio
-from absl import app, logging, flags
+from typing import List
 
+from absl import app, flags, logging
 from elgato import Elgato, State
 from elgato.exceptions import ElgatoConnectionError
 
@@ -13,8 +14,8 @@ _LIGHTS = flags.DEFINE_multi_string(
 
 async def main() -> None:
     """Toggle lights."""
-    lights: list = _LIGHTS.value
-    if lights:
+    if _LIGHTS.value:
+        lights: List[str] = _LIGHTS.value
         await asyncio.gather(*[toggle(light) for light in lights])
     else:
         logging.error("No lights provided, use --light flag(s) to provide hostnames.")
